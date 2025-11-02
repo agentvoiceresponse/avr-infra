@@ -21,6 +21,9 @@ services:
       - PORT=6033
       - DEEPGRAM_API_KEY=$DEEPGRAM_API_KEY
       - AGENT_PROMPT=$AGENT_PROMPT
+      - AMI_URL=${AMI_URL:-http://avr-ami:6006}
+    # volumes: # uncomment if you want to use the custom tools
+    #   - ./tools:/usr/src/app/tools
     networks:
       - avr
 
