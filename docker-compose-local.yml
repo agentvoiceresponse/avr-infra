@@ -59,7 +59,7 @@ services:
     environment:
       - PORT=6002
       - OPENAI_BASEURL=http://avr-ollama:11434/v1
-      - OPENAI_API_KEY=sk-2cf236d3169945adac3df0324722c37c
+      - OPENAI_API_KEY=$OPENAI_API_KEY
       - OPENAI_MODEL=tinyllama
       - OPENAI_MAX_TOKENS=${OPENAI_MAX_TOKENS:-100}
       - OPENAI_TEMPERATURE=${OPENAI_TEMPERATURE:-0.0}
