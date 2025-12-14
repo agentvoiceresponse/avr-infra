@@ -87,6 +87,7 @@ Make sure these URLs are correctly configured whether you're using local service
 | [docker-compose-deepgram.yml](./docker-compose-deepgram.yml) | Deepgram | Deepgram | Deepgram | [8](#example-8-deepgram-speech-to-speech) | Headless, Deepgram Realtime |
 | [docker-compose-n8n.yml](./docker-compose-n8n.yml) | Deepgram | N8N | Deepgram | [9](#example-9-deepgram-asrtts--n8n-llm) | Headless, N8N LLM |
 | [docker-compose-gemini.yml](./docker-compose-gemini.yml) | Gemini | Gemini | Gemini | [10](#example-10-gemini-speech-to-speech) | Headless, Gemini Realtime |
+| [docker-compose-humeai.yml](./docker-compose-humeai.yml) | HumeAI | HumeAI | HumeAI | [11](#example-11-gemini-speech-to-speech) | Headless, HumeAI Realtime |
 
 #### Example 1: Deepgram (ASR+TTS) + Anthropic (LLM)
 
@@ -261,6 +262,20 @@ GEMINI_MODEL=  Gemini model ID to use (default: gemini-2.5-flash-preview-native-
 GEMINI_INSTRUCTIONS= System prompt for the voice assistant (default. "You are a helpful assistant.")
 ```
 Visit our detailed documentation: **[Gemini STS integration](https://wiki.agentvoiceresponse.com/en/using-gemini-sts-with-avr)**
+
+#### Example 11: HumeAI Speech To Speech
+
+```bash
+docker-compose -f docker-compose-humeai.yml up -d
+```
+
+**Required .env parameters:**
+```env
+HUMEAI_API_KEY=API Key from HumeAI
+HUMEAI_CONFIG_ID=HumeAI config ID
+```
+
+Visit our detailed documentation: **[HumeAI STS integration](https://wiki.agentvoiceresponse.com/en/using-humeai-sts-with-avr)**
 
 ### Testing Your Setup
 
