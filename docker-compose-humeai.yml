@@ -6,25 +6,21 @@ services:
     restart: always
     environment:
       - PORT=5001 
-      - STS_URL=ws://avr-sts-openai:6030
+      - STS_URL=ws://avr-sts-humeai:6039
     ports:
       - 5001:5001
     networks:
       - avr
 
-  avr-sts-openai:
-    image: agentvoiceresponse/avr-sts-openai
+  avr-sts-humeai:
+    image: agentvoiceresponse/avr-sts-humeai
     platform: linux/x86_64
-    container_name: avr-sts-openai
-    restart: always
+    container_name: avr-sts-humeai
+    restart: always 
     environment:
-      - PORT=6030
-      - OPENAI_API_KEY=$OPENAI_API_KEY
-      - OPENAI_MODEL=gpt-4o-realtime-preview
-      - OPENAI_INSTRUCTIONS="You are a helpful assistant."
-      - AMI_URL=${AMI_URL:-http://avr-ami:6006}
-    # volumes: # uncomment if you want to use the custom tools
-    #   - ./tools:/usr/src/app/tools
+      - PORT=6039
+      - HUMEAI_API_KEY=$HUMEAI_API_KEY
+      - HUMEAI_CONFIG_ID=$HUMEAI_CONFIG_ID
     networks:
       - avr
 
