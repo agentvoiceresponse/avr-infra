@@ -94,7 +94,16 @@ services:
     networks:
       - avr
 
-
+  avr-phone:
+    image: agentvoiceresponse/avr-phone
+    platform: linux/x86_64
+    container_name: avr-phone
+    restart: always
+    ports:
+      - 8080:80
+    networks:
+      - avr
+      
 networks:
   avr:
     name: avr

@@ -21,6 +21,9 @@ services:
       - PORT=6035
       - ELEVENLABS_API_KEY=$ELEVENLABS_API_KEY
       - ELEVENLABS_AGENT_ID=$ELEVENLABS_AGENT_ID
+      - AMI_URL=${AMI_URL:-http://avr-ami:6006}
+    # volumes: # uncomment if you want to use the custom tools
+    #   - ./tools:/usr/src/app/tools
     networks:
       - avr
 
@@ -57,6 +60,16 @@ services:
       - AMI_PASSWORD=${AMI_PASSWORD:-avr}
     ports:
       - 6006:6006
+    networks:
+      - avr
+
+  avr-phone:
+    image: agentvoiceresponse/avr-phone
+    platform: linux/x86_64
+    container_name: avr-phone
+    restart: always
+    ports:
+      - 8080:80
     networks:
       - avr
 
