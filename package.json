@@ -1,6 +1,6 @@
 {
   "name": "avr-infra",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "author": "Agent Voice Response <info@agentvoiceresponse.com>",
   "description": "Some examples of docker-compose files for Agent Voice Response",
   "keywords": ["avr", "agentvoiceresponse", "voicebot", "infra", "deepgram", "ultravox", "openai", "realtime", "vosk", "google", "elevenlabs", "n8n"],

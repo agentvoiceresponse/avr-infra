@@ -1,27 +1,45 @@
 services:
+  traefik:
+    image: traefik:v3.6
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - avr
 
   avr-app-backend:
     image: agentvoiceresponse/avr-app-backend
     platform: linux/x86_64
     container_name: avr-app-backend
     restart: always
-    ports:
-      - "3001:3001"
     environment:
       - PORT=3001
       - JWT_SECRET=your-jwt-secret-here
       - CORE_DEFAULT_IMAGE=agentvoiceresponse/avr-core
       - DB_TYPE=sqlite
       - DB_DATABASE=/app/data/data.db
-      - FRONTEND_URL=http://localhost:3000
+      - FRONTEND_URL=http://avr.localhost
       - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
       - ADMIN_PASSWORD=$ADMIN_PASSWORD
       - WEBHOOK_URL=http://avr-app-backend:3001/webhooks
       - WEBHOOK_SECRET=your-webhook-secret-here
       - ASTERISK_CONFIG_PATH=/app/asterisk
-      - ARI_URL=$ARI_URL
-      - ARI_USERNAME=$ARI_USERNAME
-      - ARI_PASSWORD=$ARI_PASSWORD
+      - ARI_URL=${ARI_URL:-http://avr-asterisk:8088/ari}
+      - ARI_USERNAME=${ARI_USERNAME:-avr}
+      - ARI_PASSWORD=${ARI_PASSWORD:-avr}
+      - TENANT=${TENANT:-demo}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.avr-app-backend.entrypoints=web
+      - traefik.http.routers.avr-app-backend.rule=Host(`api.localhost`)
+      - traefik.http.services.avr-app-backend.loadbalancer.server.port=3001
     volumes:
       - ./asterisk/conf:/app/asterisk
       - ./data:/app/data
@@ -34,11 +52,14 @@ services:
     platform: linux/x86_64
     container_name: avr-app-frontend
     restart: always
-    ports:
-      - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:3001
-      - NEXT_PUBLIC_WEBRTC_CLIENT_URL=http://localhost:8080/index.html
+      - NEXT_PUBLIC_API_URL=http://api.localhost
+      - NEXT_PUBLIC_WEBRTC_CLIENT_URL=https://phone.agentvoiceresponse.com/index.html
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.avr-app-frontend.entrypoints=web
+      - traefik.http.routers.avr-app-frontend.rule=Host(`avr.localhost`)
+      - traefik.http.services.avr-app-frontend.loadbalancer.server.port=3000
     networks:
       - avr
 
@@ -58,17 +79,7 @@ services:
       - ./asterisk/conf/ari.conf:/etc/asterisk/my_ari.conf
     networks:
       - avr
-  
-  avr-phone:
-    image: agentvoiceresponse/avr-phone
-    platform: linux/x86_64
-    container_name: avr-phone
-    restart: always
-    ports:
-      - 8080:80
-    networks:
-      - avr
-
+      
 networks:
   avr:
     name: avr
