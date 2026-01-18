@@ -35,6 +35,7 @@ services:
       - DB_TYPE=sqlite
       - DB_DATABASE=/app/data/data.db
       - ASTERISK_CONFIG_PATH=/app/asterisk
+      - ASTERISK_RECORDINGS_PATH=/app/recordings
     labels:
       - traefik.enable=true
       - traefik.http.routers.avr-app-backend.entrypoints=web
@@ -43,6 +44,7 @@ services:
     volumes:
       - ./asterisk/conf:/app/asterisk
       - ./data:/app/data
+      - ./asterisk/recordings:/app/recordings
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - avr
@@ -77,6 +79,7 @@ services:
       - ./asterisk/conf/extensions.conf:/etc/asterisk/my_extensions.conf
       - ./asterisk/conf/queues.conf:/etc/asterisk/my_queues.conf
       - ./asterisk/conf/ari.conf:/etc/asterisk/my_ari.conf
+      - ./asterisk/recordings:/var/spool/asterisk/monitor
     networks:
       - avr
       
