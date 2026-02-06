@@ -20,6 +20,7 @@ docker-compose-*.yml
 !docker-compose-gemini.yml
 !docker-compose-local.yml
 !docker-compose-humeai.yml
+!docker-compose-sarvam.yml
 google.json
 tools
 model

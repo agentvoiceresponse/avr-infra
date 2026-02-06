@@ -1,0 +1,114 @@
+services:
+  avr-core:
+    image: agentvoiceresponse/avr-core
+    platform: linux/x86_64
+    container_name: avr-core
+    restart: always
+    environment:
+      - PORT=5001 
+      - ASR_URL=http://avr-asr-sarvam:6050/speech-to-text-stream
+      - LLM_URL=http://host.docker.internal:6051/prompt-stream
+      - TTS_URL=http://avr-tts-sarvam:6052/text-to-speech-stream
+      - INTERRUPT_LISTENING=true
+      - SYSTEM_MESSAGE=${SYSTEM_MESSAGE:-"Hello, I'm your personal assistant"}
+    ports:
+      - 5001:5001
+    networks:
+      - avr
+
+  avr-asr-sarvam:
+    image: agentvoiceresponse/avr-asr-sarvam
+    platform: linux/x86_64
+    container_name: avr-asr-sarvam
+    restart: always
+    environment:
+      - PORT=6050
+      - SARVAM_API_KEY=$SARVAM_API_KEY
+      - SARVAM_SPEECH_RECOGNITION_MODEL=${SARVAM_SPEECH_RECOGNITION_MODEL:-saarika:v2.5}
+      - SARVAM_SPEECH_RECOGNITION_LANGUAGE=${SARVAM_SPEECH_RECOGNITION_LANGUAGE:-en-IN}
+      - SARVAM_SPEECH_RECOGNITION_MODE=${SARVAM_SPEECH_RECOGNITION_MODE:-transcribe}
+    networks:
+      - avr
+  
+  avr-llm-sarvam:
+    image: agentvoiceresponse/avr-llm-sarvam
+    platform: linux/x86_64
+    container_name: avr-llm-sarvam
+    restart: always
+    environment:
+      - PORT=6051
+      - SARVAM_API_KEY=$SARVAM_API_KEY
+      - SARVAM_MODEL=${SARVAM_MODEL:-sarvam-m}
+    networks:
+      - avr
+  
+  avr-tts-sarvam:
+    image: agentvoiceresponse/avr-tts-sarvam
+    platform: linux/x86_64
+    container_name: avr-tts-sarvam
+    restart: always
+    environment:
+      - PORT=6052
+      - SARVAM_API_KEY=$SARVAM_API_KEY
+      - SARVAM_TTS_LANGUAGE=${SARVAM_TTS_LANGUAGE:-en-IN}
+      - SARVAM_TTS_SPEAKER=${SARVAM_TTS_SPEAKER:-aditya}
+      - SARVAM_TTS_MODEL=${SARVAM_TTS_MODEL:-bulbul:v3}
+      - SARVAM_TTS_TEMPERATURE=${SARVAM_TTS_TEMPERATURE:-0.6}
+    networks:
+      - avr
+
+  avr-asterisk:
+    image: agentvoiceresponse/avr-asterisk
+    platform: linux/x86_64
+    container_name: avr-asterisk
+    restart: always
+    ports:
+      - 5038:5038
+      - 5060:5060
+      - 8088:8088
+      - 8089:8089
+      - 10000-10050:10000-10050/udp
+    volumes:
+      - ./asterisk/conf/manager.conf:/etc/asterisk/my_manager.conf
+      - ./asterisk/conf/pjsip.conf:/etc/asterisk/my_pjsip.conf
+      - ./asterisk/conf/extensions.conf:/etc/asterisk/my_extensions.conf
+      - ./asterisk/conf/queues.conf:/etc/asterisk/my_queues.conf
+      - ./asterisk/conf/ari.conf:/etc/asterisk/my_ari.conf
+    networks:
+      - avr
+
+  avr-ami:
+    image: agentvoiceresponse/avr-ami
+    platform: linux/x86_64
+    container_name: avr-ami
+    restart: always
+    environment:
+      - PORT=6006
+      - AMI_HOST=${AMI_HOST:-avr-asterisk}
+      - AMI_PORT=${AMI_PORT:-5038}
+      - AMI_USERNAME=${AMI_USERNAME:-avr}
+      - AMI_PASSWORD=${AMI_PASSWORD:-avr}
+    ports:
+      - 6006:6006
+    networks:
+      - avr
+
+  avr-phone:
+    image: agentvoiceresponse/avr-phone
+    platform: linux/x86_64
+    container_name: avr-phone
+    restart: always
+    ports:
+      - 8080:80
+    networks:
+      - avr
+
+
+networks:
+  avr:
+    name: avr
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+          

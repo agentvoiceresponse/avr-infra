@@ -88,6 +88,7 @@ Make sure these URLs are correctly configured whether you're using local service
 | [docker-compose-n8n.yml](./docker-compose-n8n.yml) | Deepgram | N8N | Deepgram | [9](#example-9-deepgram-asrtts--n8n-llm) | Headless, N8N LLM |
 | [docker-compose-gemini.yml](./docker-compose-gemini.yml) | Gemini | Gemini | Gemini | [10](#example-10-gemini-speech-to-speech) | Headless, Gemini Realtime |
 | [docker-compose-humeai.yml](./docker-compose-humeai.yml) | HumeAI | HumeAI | HumeAI | [11](#example-11-gemini-speech-to-speech) | Headless, HumeAI Realtime |
+| [docker-compose-sarvam.yml](./docker-compose-sarvam.yml) | Sarvam | Sarvam | Sarvam | [12](#example-12-sarvam-speech-to-speech) | Headless, Sarvam ASR, LLM & TTS |
 
 #### Example 1: Deepgram (ASR+TTS) + Anthropic (LLM)
 
@@ -276,6 +277,19 @@ HUMEAI_CONFIG_ID=HumeAI config ID
 ```
 
 Visit our detailed documentation: **[HumeAI STS integration](https://wiki.agentvoiceresponse.com/en/using-humeai-sts-with-avr)**
+
+#### Example 12: Sarvam Speech To Speech
+
+```bash
+docker-compose -f docker-compose-sarvam.yml up -d
+```
+
+**Required .env parameters:**
+```env
+SARVAM_API_KEY=API Key from Sarvam.ai
+```
+
+Visit our detailed documentation: **[Sarvam integration](https://wiki.agentvoiceresponse.com/en/sarvam)**
 
 ### Testing Your Setup
 
