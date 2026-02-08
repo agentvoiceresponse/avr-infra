@@ -89,6 +89,7 @@ Make sure these URLs are correctly configured whether you're using local service
 | [docker-compose-gemini.yml](./docker-compose-gemini.yml) | Gemini | Gemini | Gemini | [10](#example-10-gemini-speech-to-speech) | Headless, Gemini Realtime |
 | [docker-compose-humeai.yml](./docker-compose-humeai.yml) | HumeAI | HumeAI | HumeAI | [11](#example-11-gemini-speech-to-speech) | Headless, HumeAI Realtime |
 | [docker-compose-sarvam.yml](./docker-compose-sarvam.yml) | Sarvam | Sarvam | Sarvam | [12](#example-12-sarvam-speech-to-speech) | Headless, Sarvam ASR, LLM & TTS |
+| [docker-compose-speechmatics.yml](./docker-compose-speechmatics.yml) | Speechmatics | Speechmatics | Speechmatics | [13](#example-13-speechmatics-speech-to-speech) | Headless, Speechmatics STS |
 
 #### Example 1: Deepgram (ASR+TTS) + Anthropic (LLM)
 
@@ -290,6 +291,20 @@ SARVAM_API_KEY=API Key from Sarvam.ai
 ```
 
 Visit our detailed documentation: **[Sarvam integration](https://wiki.agentvoiceresponse.com/en/sarvam)**
+
+
+#### Example 13: Speechmatics Speech To Speech
+
+```bash
+docker-compose -f docker-compose-speechmatics.yml up -d
+```
+
+**Required .env parameters:**
+```env
+SPEECHMATICS_API_KEY=API Key from Speechmatics
+```
+
+Visit our detailed documentation: **[Speechmatics integration](https://wiki.agentvoiceresponse.com/en/speechmatics)**
 
 ### Testing Your Setup
 

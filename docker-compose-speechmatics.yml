@@ -6,27 +6,20 @@ services:
     restart: always
     environment:
       - PORT=5001 
-      - STS_URL=ws://avr-sts-gemini:6037  
+      - STS_URL=ws://avr-sts-speechmatics:6040
     ports:
       - 5001:5001
     networks:
       - avr
 
-  avr-sts-gemini:
-    image: agentvoiceresponse/avr-sts-gemini
+  avr-sts-speechmatics:
+    image: agentvoiceresponse/avr-sts-speechmatics
     platform: linux/x86_64
-    container_name: avr-sts-gemini
+    container_name: avr-sts-speechmatics
     restart: always
     environment:
-      - PORT=6037
-      - GEMINI_API_KEY=$GEMINI_API_KEY
-      - GEMINI_MODEL=$GEMINI_MODEL
-      - GEMINI_INSTRUCTIONS=$GEMINI_INSTRUCTIONS
-      - GEMINI_THINKING_LEVEL=${GEMINI_THINKING_LEVEL:-MINIMAL}
-      - GEMINI_THINKING_BUDGET=${GEMINI_THINKING_BUDGET:-0}
-      - AMI_URL=${AMI_URL:-http://avr-ami:6006}
-    # volumes: # uncomment if you want to use the custom tools
-    #   - ./tools:/usr/src/app/tools
+      - PORT=6040
+      - SPEECHMATICS_API_KEY=$SPEECHMATICS_API_KEY
     networks:
       - avr
 
@@ -63,6 +56,16 @@ services:
       - AMI_PASSWORD=${AMI_PASSWORD:-avr}
     ports:
       - 6006:6006
+    networks:
+      - avr
+
+  avr-phone:
+    image: agentvoiceresponse/avr-phone
+    platform: linux/x86_64
+    container_name: avr-phone
+    restart: always
+    ports:
+      - 8080:80
     networks:
       - avr
 

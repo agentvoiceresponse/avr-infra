@@ -21,6 +21,7 @@ docker-compose-*.yml
 !docker-compose-local.yml
 !docker-compose-humeai.yml
 !docker-compose-sarvam.yml
+!docker-compose-speechmatics.yml
 google.json
 tools
 model
