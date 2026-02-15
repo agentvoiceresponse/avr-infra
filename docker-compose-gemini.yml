@@ -21,8 +21,8 @@ services:
     environment:
       - PORT=6037
       - GEMINI_API_KEY=$GEMINI_API_KEY
-      - GEMINI_MODEL=$GEMINI_MODEL
-      - GEMINI_INSTRUCTIONS=$GEMINI_INSTRUCTIONS
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.5-flash-native-audio-preview-12-2025}
+      - GEMINI_INSTRUCTIONS=${GEMINI_INSTRUCTIONS:-You are a helpful assistant}
       - GEMINI_THINKING_LEVEL=${GEMINI_THINKING_LEVEL:-MINIMAL}
       - GEMINI_THINKING_BUDGET=${GEMINI_THINKING_BUDGET:-0}
       - AMI_URL=${AMI_URL:-http://avr-ami:6006}
