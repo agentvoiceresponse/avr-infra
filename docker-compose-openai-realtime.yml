@@ -6,6 +6,7 @@ services:
     restart: always
     environment:
       - PORT=5001 
+      - HTTP_PORT=6001
       - STS_URL=ws://avr-sts-openai:6030
     ports:
       - 5001:5001
