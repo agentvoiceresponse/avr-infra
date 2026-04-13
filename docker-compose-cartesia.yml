@@ -1,0 +1,114 @@
+services:
+  avr-core:
+    image: agentvoiceresponse/avr-core
+    platform: linux/x86_64
+    container_name: avr-core
+    restart: always
+    environment:
+      - PORT=5001 
+      - ASR_URL=http://avr-asr-deepgram:6010/speech-to-text-stream
+      - LLM_URL=http://avr-llm-openai:6002/prompt-stream
+      - TTS_URL=http://host.docker.internal:6009/text-to-speech-stream
+      - INTERRUPT_LISTENING=true
+      - SYSTEM_MESSAGE="Hello, how can I help you today?"
+    ports:
+      - 5001:5001
+    networks:
+      - avr
+
+  avr-asr-deepgram:
+    image: agentvoiceresponse/avr-asr-deepgram
+    platform: linux/x86_64
+    container_name: avr-asr-deepgram
+    restart: always
+    environment:
+      - PORT=6010
+      - DEEPGRAM_API_KEY=$DEEPGRAM_API_KEY
+      - SPEECH_RECOGNITION_LANGUAGE=en-US
+      - SPEECH_RECOGNITION_MODEL=nova-2-phonecall
+    networks:
+      - avr
+
+  avr-tts-cartesia:
+    image: agentvoiceresponse/avr-tts-cartesia
+    platform: linux/x86_64
+    container_name: avr-tts-cartesia
+    restart: always
+    environment:
+      - PORT=6009
+      - CARTESIA_API_KEY=$CARTESIA_API_KEY
+      - CARTESIA_VOICE_ID=$CARTESIA_VOICE_ID
+    networks:
+      - avr
+
+  avr-llm-openai:
+    image: agentvoiceresponse/avr-llm-openai
+    platform: linux/x86_64
+    container_name: avr-llm-openai
+    restart: always
+    environment:
+      - PORT=6002
+      - OPENAI_API_KEY=$OPENAI_API_KEY
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-3.5-turbo}
+      - OPENAI_MAX_TOKENS=${OPENAI_MAX_TOKENS:-100}
+      - OPENAI_TEMPERATURE=${OPENAI_TEMPERATURE:-0.0}
+      - AMI_URL=${AMI_URL:-http://avr-ami:6006}
+      - SYSTEM_PROMPT="You are a helpful assistant."
+    volumes:
+      - ./tools:/usr/src/app/tools
+    networks:
+      - avr 
+  
+  avr-asterisk:
+    image: agentvoiceresponse/avr-asterisk
+    platform: linux/x86_64
+    container_name: avr-asterisk
+    restart: always
+    ports:
+      - 5038:5038
+      - 5060:5060
+      - 8088:8088
+      - 8089:8089
+      - 10000-10050:10000-10050/udp
+    volumes:
+      - ./asterisk/conf/manager.conf:/etc/asterisk/my_manager.conf
+      - ./asterisk/conf/pjsip.conf:/etc/asterisk/my_pjsip.conf
+      - ./asterisk/conf/extensions.conf:/etc/asterisk/my_extensions.conf
+      - ./asterisk/conf/queues.conf:/etc/asterisk/my_queues.conf
+      - ./asterisk/conf/ari.conf:/etc/asterisk/my_ari.conf
+    networks:
+      - avr
+
+  avr-ami:
+    image: agentvoiceresponse/avr-ami
+    platform: linux/x86_64
+    container_name: avr-ami
+    restart: always
+    environment:
+      - PORT=6006
+      - AMI_HOST=${AMI_HOST:-avr-asterisk}
+      - AMI_PORT=${AMI_PORT:-5038}
+      - AMI_USERNAME=${AMI_USERNAME:-avr}
+      - AMI_PASSWORD=${AMI_PASSWORD:-avr}
+    ports:
+      - 6006:6006
+    networks:
+      - avr
+
+  avr-phone:
+    image: agentvoiceresponse/avr-phone
+    platform: linux/x86_64
+    container_name: avr-phone
+    restart: always
+    ports:
+      - 8080:80
+    networks:
+      - avr
+
+networks:
+  avr:
+    name: avr
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
