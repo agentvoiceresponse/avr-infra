@@ -326,6 +326,7 @@ CARTESIA_VOICE_ID=optional_voice_id_here
 **Optional Variables:**
 ```env
 PORT= Server port (default: 6009)
+CARTESIA_LANGUAGE= Language code (default: en)
 ```
 
 Visit our detailed documentation: **[Cartesia Sonic TTS integration](https://wiki.agentvoiceresponse.com/en/cartesia)**

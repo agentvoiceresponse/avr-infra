@@ -38,6 +38,7 @@ services:
       - PORT=6009
       - CARTESIA_API_KEY=$CARTESIA_API_KEY
       - CARTESIA_VOICE_ID=$CARTESIA_VOICE_ID
+      - CARTESIA_LANGUAGE=${CARTESIA_LANGUAGE:-en}
     networks:
       - avr
 
