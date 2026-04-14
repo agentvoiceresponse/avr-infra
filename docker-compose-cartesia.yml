@@ -8,7 +8,7 @@ services:
       - PORT=5001 
       - ASR_URL=http://avr-asr-deepgram:6010/speech-to-text-stream
       - LLM_URL=http://avr-llm-openai:6002/prompt-stream
-      - TTS_URL=http://host.docker.internal:6009/text-to-speech-stream
+      - TTS_URL=http://avr-tts-cartesia:6009/text-to-speech-stream
       - INTERRUPT_LISTENING=true
       - SYSTEM_MESSAGE="Hello, how can I help you today?"
     ports:
