@@ -90,7 +90,7 @@ Make sure these URLs are correctly configured whether you're using local service
 | [docker-compose-humeai.yml](./docker-compose-humeai.yml) | HumeAI | HumeAI | HumeAI | [11](#example-11-gemini-speech-to-speech) | Headless, HumeAI Realtime |
 | [docker-compose-sarvam.yml](./docker-compose-sarvam.yml) | Sarvam | Sarvam | Sarvam | [12](#example-12-sarvam-speech-to-speech) | Headless, Sarvam ASR, LLM & TTS |
 | [docker-compose-speechmatics.yml](./docker-compose-speechmatics.yml) | Speechmatics | Speechmatics | Speechmatics | [13](#example-13-speechmatics-speech-to-speech) | Headless, Speechmatics STS |
-| [docker-compose-cartesia.yml](./docker-compose-cartesia.yml) | Deepgram | OpenAI | Cartesia | [14](#example-14-cartesian-tts) | Headless, Cartesia TTS |
+| [docker-compose-cartesia.yml](./docker-compose-cartesia.yml) | Deepgram | OpenAI | Cartesia | [14](#example-14-cartesia-tts) | Headless, Cartesia TTS |
 
 #### Example 1: Deepgram (ASR+TTS) + Anthropic (LLM)
 
@@ -313,6 +313,8 @@ Visit our detailed documentation: **[Speechmatics integration](https://wiki.agen
 docker-compose -f docker-compose-cartesia.yml up -d
 ```
 
+This stack uses **Cartesia Sonic** for TTS (`avr-tts-cartesia`, port `6009` on the Docker network), Deepgram for ASR, and OpenAI for LLM. It also runs **`avr-phone`** with a browser UI on host **http://localhost:8080**.
+
 **Required .env parameters:**
 ```env
 DEEPGRAM_API_KEY=your_deepgram_key
@@ -325,9 +327,13 @@ CARTESIA_VOICE_ID=optional_voice_id_here
 
 **Optional Variables:**
 ```env
-PORT= Server port (default: 6009)
+OPENAI_MODEL= Override model (default: gpt-3.5-turbo)
+OPENAI_MAX_TOKENS= Override max tokens (default: 100)
+OPENAI_TEMPERATURE= Override temperature (default: 0.0)
 CARTESIA_LANGUAGE= Language code (default: en)
 ```
+
+`avr-core` is configured with `INTERRUPT_LISTENING=true` so callers can interrupt playback (barge-in).
 
 Visit our detailed documentation: **[Cartesia Sonic TTS integration](https://wiki.agentvoiceresponse.com/en/cartesia)**
 
