@@ -8,7 +8,7 @@ services:
       - PORT=5001 
       - ASR_URL=http://avr-asr-soniox:6018/speech-to-text-stream
       - LLM_URL=http://avr-llm-openai:6002/prompt-stream
-      - TTS_URL=http://avr-tts-deepgram:6011/text-to-speech-stream
+      - TTS_URL=http://avr-tts-soniox:6011/text-to-speech-stream
       - INTERRUPT_LISTENING=false
       - SYSTEM_MESSAGE="Hello, how can I help you today?"
     ports:
@@ -29,14 +29,19 @@ services:
     networks:
       - avr
   
-  avr-tts-deepgram:
-    image: agentvoiceresponse/avr-tts-deepgram
+  avr-tts-soniox:
+    image: agentvoiceresponse/avr-tts-soniox
     platform: linux/x86_64
-    container_name: avr-tts-deepgram
+    container_name: avr-tts-soniox
     restart: always
     environment:
       - PORT=6011
-      - DEEPGRAM_API_KEY=$DEEPGRAM_API_KEY
+      - SONIOX_API_KEY=$SONIOX_API_KEY
+      - SONIOX_TTS_MODEL=${SONIOX_TTS_MODEL:-tts-rt-v1}
+      - SONIOX_TTS_LANGUAGE=${SONIOX_TTS_LANGUAGE:-en}
+      - SONIOX_TTS_VOICE=${SONIOX_TTS_VOICE:-Adrian}
+      - SONIOX_TTS_AUDIO_FORMAT=${SONIOX_TTS_AUDIO_FORMAT:-pcm_s16le}
+      - SONIOX_TTS_SAMPLE_RATE=${SONIOX_TTS_SAMPLE_RATE:-8000}
     networks:
       - avr
 
@@ -109,4 +114,3 @@ networks:
     ipam:
       config:
         - subnet: 172.20.0.0/24
-          
