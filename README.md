@@ -91,6 +91,7 @@ Make sure these URLs are correctly configured whether you're using local service
 | [docker-compose-sarvam.yml](./docker-compose-sarvam.yml) | Sarvam | Sarvam | Sarvam | [12](#example-12-sarvam-speech-to-speech) | Headless, Sarvam ASR, LLM & TTS |
 | [docker-compose-speechmatics.yml](./docker-compose-speechmatics.yml) | Speechmatics | Speechmatics | Speechmatics | [13](#example-13-speechmatics-speech-to-speech) | Headless, Speechmatics STS |
 | [docker-compose-cartesia.yml](./docker-compose-cartesia.yml) | Deepgram | OpenAI | Cartesia | [14](#example-14-cartesia-tts) | Headless, Cartesia TTS |
+| [docker-compose-soniox.yml](./docker-compose-soniox.yml) | Soniox | OpenAI | Soniox | [15](#example-15-soniox-asr--openai-llm--soniox-tts) | Headless, Soniox ASR + TTS |
 
 #### Example 1: Deepgram (ASR+TTS) + Anthropic (LLM)
 
@@ -336,6 +337,32 @@ CARTESIA_LANGUAGE= Language code (default: en)
 `avr-core` is configured with `INTERRUPT_LISTENING=true` so callers can interrupt playback (barge-in).
 
 Visit our detailed documentation: **[Cartesia Sonic TTS integration](https://wiki.agentvoiceresponse.com/en/cartesia)**
+
+#### Example 15: Soniox (ASR) + OpenAI (LLM) + Soniox (TTS)
+
+```bash
+docker-compose -f docker-compose-soniox.yml up -d
+```
+
+This stack uses Soniox for both speech recognition and text-to-speech, with OpenAI as the LLM provider.
+
+**Required .env parameters:**
+```env
+SONIOX_API_KEY=your_soniox_key
+OPENAI_API_KEY=your_openai_key
+```
+
+**Optional Variables:**
+```env
+OPENAI_MODEL= Override model (default: gpt-3.5-turbo)
+OPENAI_MAX_TOKENS= Override max tokens (default: 100)
+OPENAI_TEMPERATURE= Override temperature (default: 0.0)
+SONIOX_TTS_MODEL= TTS model (default: tts-rt-v1)
+SONIOX_TTS_LANGUAGE= TTS language (default: en)
+SONIOX_TTS_VOICE= TTS voice (default: Adrian)
+SONIOX_TTS_AUDIO_FORMAT= Audio format (default: pcm_s16le)
+SONIOX_TTS_SAMPLE_RATE= Audio sample rate (default: 8000)
+```
 
 ### Testing Your Setup
 
