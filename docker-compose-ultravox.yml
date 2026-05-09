@@ -20,6 +20,7 @@ services:
     restart: always
     environment:
       - PORT=6031
+      - ULTRAVOX_CALL_TYPE=${ULTRAVOX_CALL_TYPE:-agent}
       - ULTRAVOX_AGENT_ID=$ULTRAVOX_AGENT_ID
       - ULTRAVOX_API_KEY=$ULTRAVOX_API_KEY
     networks:
@@ -58,6 +59,16 @@ services:
       - AMI_PASSWORD=${AMI_PASSWORD:-avr}
     ports:
       - 6006:6006
+    networks:
+      - avr
+      
+  avr-phone:
+    image: agentvoiceresponse/avr-phone
+    platform: linux/x86_64
+    container_name: avr-phone
+    restart: always
+    ports:
+      - 8080:80
     networks:
       - avr
 
