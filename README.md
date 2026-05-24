@@ -176,10 +176,17 @@ docker-compose -f docker-compose-openai-realtime.yml up -d
 
 **Required .env parameters:**
 ```env
-PORT=6030
-OPENAI_API_KEY=
-OPENAI_MODEL=gpt-4o-realtime-preview
+OPENAI_API_KEY=your_openai_api_key
+```
+
+**Optional .env parameters (defaults shown):**
+```env
+OPENAI_MODEL=gpt-realtime-2
 OPENAI_INSTRUCTIONS="You are a helpful assistant."
+OPENAI_VOICE=alloy
+OPENAI_REASONING_EFFORT=low
+OPENAI_TURN_DETECTION=server_vad
+OPENAI_MAX_TOKENS=inf
 ```
 
 #### Example 7: Ultravox Speech To Speech

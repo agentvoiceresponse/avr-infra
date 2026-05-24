@@ -21,8 +21,12 @@ services:
     environment:
       - PORT=6030
       - OPENAI_API_KEY=$OPENAI_API_KEY
-      - OPENAI_MODEL=gpt-4o-realtime-preview
-      - OPENAI_INSTRUCTIONS="You are a helpful assistant."
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-realtime-2}
+      - OPENAI_INSTRUCTIONS=${OPENAI_INSTRUCTIONS:-"You are a helpful assistant."}
+      - OPENAI_VOICE=${OPENAI_VOICE:-alloy}
+      - OPENAI_REASONING_EFFORT=${OPENAI_REASONING_EFFORT:-low}
+      - OPENAI_TURN_DETECTION=${OPENAI_TURN_DETECTION:-server_vad}
+      - OPENAI_MAX_TOKENS=${OPENAI_MAX_TOKENS:-inf}
       - AMI_URL=${AMI_URL:-http://avr-ami:6006}
     # volumes: # uncomment if you want to use the custom tools
     #   - ./tools:/usr/src/app/tools
@@ -82,4 +86,3 @@ networks:
     ipam:
       config:
         - subnet: 172.20.0.0/24
-          
