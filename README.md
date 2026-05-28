@@ -260,19 +260,21 @@ Visit our detailed documentation: **[AVR + N8N Integration Guide](https://wiki.a
 docker-compose -f docker-compose-gemini.yml up -d
 ```
 
-**Required .env parameters:**
+**Authentication (choose one):**
+
+- **Google AI Studio (default):** set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) in `.env`
+- **Vertex AI:** set `GOOGLE_CLOUD_PROJECT`, `GOOGLE_CLOUD_LOCATION`, mount a service account JSON, and uncomment the Vertex block in `docker-compose-gemini.yml`
+
+**Optional variables:**
+
 ```env
-GEMINI_API_KEY= API Key from Google AI Studio
+GEMINI_MODEL=gemini-2.5-flash-native-audio-preview-12-2025
+GEMINI_INSTRUCTIONS="You are a helpful assistant."
+GEMINI_THINKING_LEVEL=MINIMAL
+GEMINI_THINKING_BUDGET=0
 ```
 
-**Optional Variables:**
-
-```env
-PORT= Server port (default: 6037)
-GEMINI_MODEL=  Gemini model ID to use (default: gemini-2.5-flash-preview-native-audio-dialog)
-GEMINI_INSTRUCTIONS= System prompt for the voice assistant (default. "You are a helpful assistant.")
-```
-Visit our detailed documentation: **[Gemini STS integration](https://wiki.agentvoiceresponse.com/en/using-gemini-sts-with-avr)**
+See `docker-compose-gemini.yml` (image `avr-sts-gemini:1.5.0`) and **[Gemini STS integration](https://wiki.agentvoiceresponse.com/en/using-gemini-sts-with-avr)** for full Vertex setup.
 
 #### Example 11: HumeAI Speech To Speech
 
