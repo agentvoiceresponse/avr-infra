@@ -92,6 +92,7 @@ Make sure these URLs are correctly configured whether you're using local service
 | [docker-compose-speechmatics.yml](./docker-compose-speechmatics.yml) | Speechmatics | Speechmatics | Speechmatics | [13](#example-13-speechmatics-speech-to-speech) | Headless, Speechmatics STS |
 | [docker-compose-cartesia.yml](./docker-compose-cartesia.yml) | Deepgram | OpenAI | Cartesia | [14](#example-14-cartesia-tts) | Headless, Cartesia TTS |
 | [docker-compose-soniox.yml](./docker-compose-soniox.yml) | Soniox | OpenAI | Soniox | [15](#example-15-soniox-asr--openai-llm--soniox-tts) | Headless, Soniox ASR + TTS |
+| [docker-compose-xai.yml](./docker-compose-xai.yml) | xAI | xAI | xAI | [16](#example-16-xai-speech-to-speech) | Headless, xAI Grok Voice Agent STS |
 
 #### Example 1: Deepgram (ASR+TTS) + Anthropic (LLM)
 
@@ -372,6 +373,32 @@ SONIOX_TTS_VOICE= TTS voice (default: Adrian)
 SONIOX_TTS_AUDIO_FORMAT= Audio format (default: pcm_s16le)
 SONIOX_TTS_SAMPLE_RATE= Audio sample rate (default: 8000)
 ```
+
+#### Example 16: xAI Speech To Speech
+
+```bash
+docker-compose -f docker-compose-xai.yml up -d
+```
+
+This stack uses **xAI Grok Voice Agent** for end-to-end speech-to-speech (`avr-sts-xai`, port `6041` on the Docker network).
+
+**Required .env parameters:**
+```env
+XAI_API_KEY=your_xai_api_key
+```
+
+**Optional variables:**
+```env
+XAI_MODEL=grok-voice-latest
+XAI_VOICE=eve
+XAI_INSTRUCTIONS="You are a helpful assistant that can answer questions and help with tasks."
+XAI_TURN_DETECTION=server_vad
+XAI_WELCOME_MESSAGE="Hello, how can I help you today?"
+```
+
+Set `XAI_WELCOME_MESSAGE` to play a verbatim greeting at session start via xAI `force_message`.
+
+Visit our detailed documentation: **[Using xAI Grok Voice Agent STS with AVR](https://wiki.agentvoiceresponse.com/en/avr-sts-xai)**
 
 ### Testing Your Setup
 
