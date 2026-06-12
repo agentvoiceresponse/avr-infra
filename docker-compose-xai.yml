@@ -14,9 +14,9 @@ services:
       - avr
 
   avr-sts-xai:
-    # avr-sts-xai 1.0.0 — xAI Grok Voice Agent STS
+    # avr-sts-xai 1.1.0 — xAI Grok Voice Agent STS
     # https://github.com/agentvoiceresponse/avr-sts-xai
-    image: agentvoiceresponse/avr-sts-xai:1.0.0
+    image: agentvoiceresponse/avr-sts-xai:1.1.0
     platform: linux/x86_64
     container_name: avr-sts-xai
     restart: always
@@ -27,6 +27,7 @@ services:
       - XAI_VOICE=${XAI_VOICE:-eve}
       - XAI_INSTRUCTIONS=${XAI_INSTRUCTIONS:-You are a helpful assistant that can answer questions and help with tasks.}
       - XAI_TURN_DETECTION=${XAI_TURN_DETECTION:-server_vad}
+      - XAI_WELCOME_MESSAGE=${XAI_WELCOME_MESSAGE:-}
       - AMI_URL=${AMI_URL:-http://avr-ami:6006}
     networks:
       - avr
