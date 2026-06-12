@@ -14,9 +14,7 @@ services:
       - avr
 
   avr-sts-xai:
-    # avr-sts-xai 1.1.0 — xAI Grok Voice Agent STS
-    # https://github.com/agentvoiceresponse/avr-sts-xai
-    image: agentvoiceresponse/avr-sts-xai:1.1.0
+    image: agentvoiceresponse/avr-sts-xai
     platform: linux/x86_64
     container_name: avr-sts-xai
     restart: always
